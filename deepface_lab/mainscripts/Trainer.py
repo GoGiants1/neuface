@@ -27,6 +27,7 @@ def trainerThread (s2c, c2s, e,
                     silent_start=False,
                     execute_programs = None,
                     debug=False,
+                    export_iter=1000,
                     **kwargs):
     while True:
         try:
@@ -55,6 +56,7 @@ def trainerThread (s2c, c2s, e,
                         force_gpu_idxs=force_gpu_idxs,
                         cpu_only=cpu_only,
                         silent_start=silent_start,
+                        iter_export=export_iter,
                         debug=debug)
 
             is_reached_goal = model.is_reached_iter_goal()
@@ -71,6 +73,12 @@ def trainerThread (s2c, c2s, e,
             def model_backup():
                 if not debug and not is_reached_goal:
                     model.create_backup()             
+
+            def model_exportDFM() :
+                try: # SAEHD only
+                    model.export_dfm_iter()
+                except:
+                    pass
 
             def send_preview():
                 if not debug:
@@ -157,6 +165,8 @@ def trainerThread (s2c, c2s, e,
 
                         if model.get_iter() == 1:
                             model_save()
+                        elif not (model.get_iter() % export_iter):
+                            model_exportDFM()
 
                         if model.get_target_iter() != 0 and model.is_reached_iter_goal():
                             io.log_info ('Reached target iteration.')
@@ -188,6 +198,8 @@ def trainerThread (s2c, c2s, e,
                         model_save()
                     elif op == 'backup':
                         model_backup()
+                    elif op == 'export':
+                        model_exportDFM()
                     elif op == 'preview':
                         if is_reached_goal:
                             model.pass_one_iter()
@@ -293,7 +305,7 @@ def main(**kwargs):
 
                 # HEAD
                 head_lines = [
-                    '[s]:save [b]:backup [enter]:exit',
+                    '[s]:save [b]:backup [e]:export [enter]:exit',
                     '[p]:update [space]:next preview [l]:change history range',
                     'Preview: "%s" [%d/%d]' % (selected_preview_name,selected_preview+1, len(previews) )
                     ]
@@ -332,6 +344,8 @@ def main(**kwargs):
                 s2c.put ( {'op': 'save'} )
             elif key == ord('b'):
                 s2c.put ( {'op': 'backup'} )
+            elif key == ord('e'):
+                s2c.put ( {'op': 'export'} )
             elif key == ord('p'):
                 if not is_waiting_preview:
                     is_waiting_preview = True

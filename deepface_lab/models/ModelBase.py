@@ -35,6 +35,7 @@ class ModelBase(object):
                        debug=False,
                        force_model_class_name=None,
                        silent_start=False,
+                       iter_export=1000,
                        **kwargs):
         self.is_training = is_training
         self.is_exporting = is_exporting
@@ -44,6 +45,7 @@ class ModelBase(object):
         self.pretraining_data_path = pretraining_data_path
         self.pretrained_model_path = pretrained_model_path
         self.no_preview = no_preview
+        self.iter_export = int(iter_export)
         self.debug = debug
 
         self.model_class_name = model_class_name = Path(inspect.getmodule(self).__file__).parent.name.rsplit("_", 1)[1]
@@ -407,6 +409,9 @@ class ModelBase(object):
             if diff_hour > 0 and diff_hour % self.autobackup_hour == 0:
                 self.autobackup_start_time += self.autobackup_hour*3600
                 self.create_backup()
+        
+        if self.iter % self.iter_export:
+            self.export_dfm_iter(rename=False)
 
     def create_backup(self):
         io.log_info ("Creating backup...", end='\r')
@@ -444,6 +449,16 @@ class ModelBase(object):
 
                 if len(plist) != 0:
                     self.get_preview_history_writer().post(plist, self.loss_history, self.iter)
+    
+    def export_dfm_iter(self, rename=True):
+        output_path = self.get_strpath_storage_for_file('model.dfm')
+        iter_path = self.get_strpath_storage_for_file(f'model_{self.iter}.dfm')
+        try:
+            self.export_dfm()
+            if rename: os.rename(output_path, iter_path)
+            io.log_info(f"Export DFM iter: {self.iter} Success.\r\n")
+        except e:
+            io.log_info("Export DFM Failed.\r\n")
 
     def debug_one_iter(self):
         images = []

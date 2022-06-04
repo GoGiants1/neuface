@@ -14,9 +14,10 @@ import models
 from core.interact import interact as io
 
 
-def main(model_class_name, saved_models_path):
+def main(model_class_name, saved_models_path, silent_start=False, cpu_only=False):
     model = models.import_model(model_class_name)(
                         is_exporting=True,
                         saved_models_path=saved_models_path,
-                        cpu_only=True)
+                        silent_start=silent_start,
+                        cpu_only=cpu_only)
     model.export_dfm () 

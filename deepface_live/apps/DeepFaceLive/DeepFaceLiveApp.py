@@ -230,8 +230,6 @@ class DeepFaceLiveApp(qtx.QXMainApplication):
         splash_wnd = self.splash_wnd =\
             qtx.QXSplashWindow(layout=qtx.QXVBoxLayout([ (qtx.QXLabel(image=QXImageDB.splash_deepfacelive()), qtx.AlignCenter)
                                                        ], contents_margins=20))
-        splash_wnd.show()
-        splash_wnd.center_on_screen()
 
         self._dfl_wnd = None
         self._t = qtx.QXTimer(interval=1666, timeout=self._on_splash_wnd_expired, single_shot=True, start=True)

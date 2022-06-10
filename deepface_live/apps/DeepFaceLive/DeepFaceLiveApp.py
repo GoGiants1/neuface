@@ -27,6 +27,8 @@ from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
 _PREVIEW_HEIGHT = 400
 _CONTROL_HEIGHT = 150
+_WINDOW_WIDTH  = 1024
+_WINDOW_HEIGHT = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + 5
 
 class QLiveSwap(qtx.QXWidget):
     def __init__(self, userdata_path : Path,
@@ -203,6 +205,10 @@ class QDFLAppWindow(qtx.QXWindow):
         q_live_swap = self.q_live_swap = QLiveSwap(userdata_path=self._userdata_path, settings_dirpath=self._settings_dirpath)
         q_live_swap.initialize()
         self.content_l.addWidget(q_live_swap)
+        self.setFixedWidth(_WINDOW_WIDTH)
+        self.setMaximumWidth(_WINDOW_WIDTH)
+        self.setFixedHeight(_WINDOW_HEIGHT)
+        self.setMaximumHeight(_WINDOW_HEIGHT)
 
     def _on_reset_modules_settings(self):
         if self.q_live_swap is not None:

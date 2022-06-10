@@ -10,7 +10,7 @@ class QBCFaceSwapViewer(qtx.QXCollapsibleSection):
     """
     def __init__(self,  backed_weak_heap : backend.BackendWeakHeap,
                         bc : backend.BackendConnection,
-                        preview_width=256,):
+                        preview_width=512,):
         self._preview_width = preview_width
         self._timer = qtx.QXTimer(interval=16, timeout=self._on_timer_16ms, start=True)
 

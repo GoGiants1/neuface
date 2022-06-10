@@ -26,6 +26,6 @@ class NDstController(QBackendPanel):
                                    q_error, qtx.QXWidgetVBox([], spacing=0, fixed_height=10),
                                    q_frame_slider], spacing=5)
 
-        super().__init__(backend, L('@QFileSource.module_title'),
+        super().__init__(backend, L('Dst Controller'),
                          layout=main_l, content_align_top=True)
 

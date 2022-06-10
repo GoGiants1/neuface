@@ -86,7 +86,7 @@ class FaceMergerWorker(BackendWorker):
             cs.face_mask_celeb.enable()
             cs.face_mask_celeb.set_flag(state.face_mask_celeb if state.face_mask_celeb is not None else True)
             cs.face_mask_lmrks.enable()
-            cs.face_mask_lmrks.set_flag(state.face_mask_lmrks if state.face_mask_lmrks is not None else False)
+            cs.face_mask_lmrks.set_flag(state.face_mask_lmrks if state.face_mask_lmrks is not None else True)
 
             cs.face_mask_erode.enable()
             cs.face_mask_erode.set_config(lib_csw.Number.Config(min=-400, max=400, step=1, decimals=0, allow_instant_update=True))

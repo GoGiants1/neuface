@@ -908,7 +908,7 @@ class Localization:
                 'it-IT' : "Riempi la perdita di fotogrammi duplicando l'ultimo frame"},
 
     'QBCFrameViewer.title':{
-                'en-US' : 'Source frame',
+                'en-US' : 'Original frame',
                 'ru-RU' : 'Исходный кадр',
                 'zh-CN' : '源画面',
                 'es-ES' : 'Frame de origen',
@@ -1034,7 +1034,7 @@ class Localization:
                 'it-IT' : 'Scaricando modello...'},
 
     'StreamOutput.SourceType.SOURCE_FRAME':{
-                'en-US' : 'Source frame',
+                'en-US' : 'Original frame',
                 'ru-RU' : 'Исходный кадр',
                 'zh-CN' : '源帧',
                 'es-ES' : 'Frame de origen',
@@ -1062,7 +1062,7 @@ class Localization:
                 'it-IT' : 'Fotogramma fuso'},
 
     'StreamOutput.SourceType.MERGED_FRAME_OR_SOURCE_FRAME':{
-                'en-US' : 'Merged frame or source frame',
+                'en-US' : 'Merged frame or original frame',
                 'ru-RU' : 'Склеенный кадр или исходный кадр',
                 'zh-CN' : '合成后的画面否则源帧',
                 'es-ES' : 'Frame fusionado o frame de origen',
@@ -1076,7 +1076,7 @@ class Localization:
                 'it-IT' : 'Fotogramma sorgente e fuso'},
 
     'StreamOutput.SourceType.SOURCE_N_MERGED_FRAME_OR_SOURCE_FRAME':{
-                'en-US' : 'Source and merged frame or source frame',
+                'en-US' : 'Source and merged frame or original frame',
                 'ru-RU' : 'Исходный и склеенный кадр или исходный кадр',
                 'zh-CN' : '源和融合后的帧则源帧',
                 'es-ES' : 'Frame de origen y fusionado o frame de origen',

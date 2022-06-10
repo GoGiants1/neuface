@@ -187,10 +187,7 @@ class QDFLAppWindow(qtx.QXWindow):
 
         menu_bar_tail = qtx.QXFrameHBox([10, QXLabel(text=L('@QDFLAppWindow.process_priority')), 4, cb_process_priority], size_policy=('fixed', 'fixed'))
 
-        self.setLayout( qtx.QXVBoxLayout([  qtx.QXWidgetHBox([menu_bar, menu_bar_tail, qtx.QXFrame() ], size_policy=('minimumexpanding', 'fixed')),
-                                            5,
-                                            qtx.QXWidget(layout=self.content_l)
-                                         ]))
+        self.setLayout( qtx.QXVBoxLayout([ qtx.QXWidget(layout=self.content_l) ]))
 
         self.call_on_closeEvent(self._on_closeEvent)
 

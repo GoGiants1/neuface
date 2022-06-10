@@ -17,6 +17,7 @@ from .ui.QFaceMerger import QFaceMerger
 from .ui.QFaceAnimator import QFaceAnimator
 from .ui.QFaceSwapper import QFaceSwapper
 from .ui.QFileSource import QFileSource
+from .ui.NDstController import NDstController
 from .ui.QFrameAdjuster import QFrameAdjuster
 from .ui.QStreamOutput import QStreamOutput
 from .ui.widgets.QBCFaceAlignViewer import QBCFaceAlignViewer
@@ -24,6 +25,7 @@ from .ui.widgets.QBCFaceSwapViewer import QBCFaceSwapViewer
 from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
+_PREVIEW_HEIGHT = 400
 
 class QLiveSwap(qtx.QXWidget):
     def __init__(self, userdata_path : Path,
@@ -78,8 +80,8 @@ class QLiveSwap(qtx.QXWidget):
         self.q_stream_output  = QStreamOutput(self.stream_output)
 
         self.q_ds_frame_viewer = QBCFrameViewer(backend_weak_heap, multi_sources_bc_out)
-        self.q_ds_fa_viewer    = QBCFaceAlignViewer(backend_weak_heap, face_aligner_bc_out, preview_width=256)
-        self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=256)
+        self.q_ds_fa_viewer    = QBCFaceAlignViewer(backend_weak_heap, face_aligner_bc_out, preview_width=512)
+        self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=512)
         self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out)
 
 
@@ -89,13 +91,13 @@ class QLiveSwap(qtx.QXWidget):
                                         qtx.QXWidgetVBox([self.q_frame_adjuster, self.q_face_merger, self.q_stream_output], spacing=0, fixed_width=0),
                                     ], spacing=0, size_policy=('fixed', 'fixed'), fixed_height=0)
 
-        q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=256), qtx.AlignTop),
+        q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_fa_viewer], fixed_width=0), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_fc_viewer], fixed_width=0), qtx.AlignTop),
-                                            (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=256), qtx.AlignTop),
-                                        ], spacing=5, size_policy=('fixed', 'fixed') )
+                                            (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
+                                        ], spacing=0, size_policy=('fixed', 'fixed') )
 
-        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes], spacing=5), qtx.AlignCenter) ]))
+        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes], fixed_width=1024, spacing=0), qtx.AlignCenter) ]))
 
         self._timer = qtx.QXTimer(interval=5, timeout=self._on_timer_5ms, start=True)
 

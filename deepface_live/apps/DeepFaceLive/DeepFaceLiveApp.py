@@ -26,6 +26,7 @@ from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
 _PREVIEW_HEIGHT = 400
+_CONTROL_HEIGHT = 150
 
 class QLiveSwap(qtx.QXWidget):
     def __init__(self, userdata_path : Path,
@@ -84,6 +85,8 @@ class QLiveSwap(qtx.QXWidget):
         self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=512)
         self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out)
 
+        # Neu-face UI
+        self.n_dst_controller  = NDstController(self.file_source)
 
         q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=0, fixed_width=0),
                                         qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=0),
@@ -97,7 +100,10 @@ class QLiveSwap(qtx.QXWidget):
                                             (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                         ], spacing=0, size_policy=('fixed', 'fixed') )
 
-        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes], fixed_width=1024, spacing=0), qtx.AlignCenter) ]))
+        q_control_nodes = qtx.QXWidgetHBox([ (qtx.QXWidgetVBox([self.n_dst_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT), qtx.AlignTop),
+                                        ], spacing=0, size_policy=('fixed', 'fixed') )
+
+        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes, q_control_nodes], fixed_width=1024, spacing=0), qtx.AlignCenter) ]))
 
         self._timer = qtx.QXTimer(interval=5, timeout=self._on_timer_5ms, start=True)
 

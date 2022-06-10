@@ -82,15 +82,16 @@ class QLiveSwap(qtx.QXWidget):
         self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=256)
         self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out)
 
-        q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=5, fixed_width=256),
-                                        qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=5, fixed_width=256),
-                                        qtx.QXWidgetVBox([self.q_face_marker, self.q_face_animator, self.q_face_swapper], spacing=5, fixed_width=256),
-                                        qtx.QXWidgetVBox([self.q_frame_adjuster, self.q_face_merger, self.q_stream_output], spacing=5, fixed_width=256),
-                                    ], spacing=5, size_policy=('fixed', 'fixed') )
+
+        q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=0, fixed_width=0),
+                                        qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=0),
+                                        qtx.QXWidgetVBox([self.q_face_marker, self.q_face_animator, self.q_face_swapper], spacing=0, fixed_width=0),
+                                        qtx.QXWidgetVBox([self.q_frame_adjuster, self.q_face_merger, self.q_stream_output], spacing=0, fixed_width=0),
+                                    ], spacing=0, size_policy=('fixed', 'fixed'), fixed_height=0)
 
         q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=256), qtx.AlignTop),
-                                            (qtx.QXWidgetVBox([self.q_ds_fa_viewer], fixed_width=256), qtx.AlignTop),
-                                            (qtx.QXWidgetVBox([self.q_ds_fc_viewer], fixed_width=256), qtx.AlignTop),
+                                            (qtx.QXWidgetVBox([self.q_ds_fa_viewer], fixed_width=0), qtx.AlignTop),
+                                            (qtx.QXWidgetVBox([self.q_ds_fc_viewer], fixed_width=0), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=256), qtx.AlignTop),
                                         ], spacing=5, size_policy=('fixed', 'fixed') )
 

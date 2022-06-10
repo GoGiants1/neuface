@@ -36,6 +36,11 @@ class NSrcController(QBackendPanel):
 
         q_model_info_label = self._q_model_info_label = QLabelPopupInfoCSWInfoLabel(cs.model_info_label)
 
+        q_enable_poisson_label = QLabelPopupInfo(label=L('Poisson') )
+        q_enable_poisson       = QCheckBoxCSWFlag(cs.swap_all_faces, reflect_state_widgets=[q_enable_poisson_label])
+        q_poisson_size_label = QLabelPopupInfo(label=L('') )
+        q_poisson_size       = QSliderCSWNumber(cs.poisson_size, reflect_state_widgets=[q_poisson_size_label])
+
         grid_l = qtx.QXGridLayout( spacing=5)
         row = 0
         grid_l.addWidget(q_device_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
@@ -47,6 +52,11 @@ class NSrcController(QBackendPanel):
         grid_l.addWidget(q_model_dl_progress, row, 0, 1, 2 )
         row += 1
         grid_l.addWidget(q_model_dl_error, row, 0, 1, 2 )
+        row += 1
+        grid_l.addWidget(q_enable_poisson_label, row, 0, alignment=qtx.AlignLeft  )
+        grid_l.addWidget(q_enable_poisson, row, 0, 1, 2 )
+        grid_l.addWidget(q_poisson_size_label, row, 0, alignment=qtx.AlignLeft  )
+        grid_l.addWidget(q_poisson_size, row, 0, 1, 2 )
 
         super().__init__(backend, L('Src Controller'),
                          layout=qtx.QXVBoxLayout([grid_l]) )

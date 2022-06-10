@@ -25,38 +25,36 @@ class NSrcController(QBackendPanel):
 
         btn_open_folder = self.btn_open_folder = qtx.QXPushButton(image = QXImageDB.eye_outline('light gray'), tooltip_text='Reveal in Explorer', released=self._btn_open_folder_released, fixed_size=(24,22) )
 
-        q_device_label  = QLabelPopupInfo(label=L('@common.device'), popup_info_text=L('@common.help.device') )
-        q_device        = QComboBoxCSWDynamicSingleSwitch(cs.device, reflect_state_widgets=[q_device_label])
-
-        q_model_label = QLabelPopupInfo(label=L('@QFaceSwapper.model'), popup_info_text=L('@QFaceSwapper.help.model') )
-        q_model       = QComboBoxCSWDynamicSingleSwitch(cs.model, reflect_state_widgets=[q_model_label, btn_open_folder])
+        q_select_label  = QLabelPopupInfo(label=L('Select the Device and Model'), popup_info_text=L('@common.help.device') )
+        q_device        = QComboBoxCSWDynamicSingleSwitch(cs.device, reflect_state_widgets=[q_select_label])
+        q_model         = QComboBoxCSWDynamicSingleSwitch(cs.model, reflect_state_widgets=[q_select_label, btn_open_folder])
 
         q_model_dl_error = self._q_model_dl_error = QErrorCSWError(cs.model_dl_error)
         q_model_dl_progress = self._q_model_dl_progress = QProgressBarCSWProgress(cs.model_dl_progress)
 
         q_model_info_label = self._q_model_info_label = QLabelPopupInfoCSWInfoLabel(cs.model_info_label)
 
-        q_enable_poisson_label = QLabelPopupInfo(label=L('Poisson') )
-        q_enable_poisson       = QCheckBoxCSWFlag(cs.swap_all_faces, reflect_state_widgets=[q_enable_poisson_label])
-        q_poisson_size_label = QLabelPopupInfo(label=L('') )
-        q_poisson_size       = QSliderCSWNumber(cs.poisson_size, reflect_state_widgets=[q_poisson_size_label])
+        q_poisson_label     = QLabelPopupInfo(label=L('Poisson') )
+        q_poisson_enable    = QCheckBoxCSWFlag(cs.poisson_enable, reflect_state_widgets=[q_poisson_label])
+        q_poisson_size      = QSliderCSWNumber(cs.poisson_size, reflect_state_widgets=[q_poisson_label])
 
         grid_l = qtx.QXGridLayout( spacing=5)
         row = 0
-        grid_l.addWidget(q_device_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
-        grid_l.addWidget(q_device, row, 1, alignment=qtx.AlignLeft )
+        grid_l.addWidget(q_select_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
         row += 1
-        grid_l.addWidget(q_model_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
-        grid_l.addLayout(qtx.QXHBoxLayout([q_model, 2, btn_open_folder, 2, q_model_info_label]), row, 1 )
+        grid_l.addWidget(qtx.QXWidgetHBox([q_device], fixed_width=150), row, 0)
+        grid_l.addWidget(qtx.QXWidgetHBox([q_model], fixed_width=300), row, 1)
+        grid_l.addWidget(qtx.QXWidgetHBox([btn_open_folder, q_model_info_label], fixed_width=60), row, 2)
+        row += 1
+        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=10), row, 0, 1, 2 )
+        row += 1
+        grid_l.addLayout(qtx.QXHBoxLayout([q_poisson_label, 2, q_poisson_enable, 2, q_poisson_size ]), row, 0, 1, 3 )
         row += 1
         grid_l.addWidget(q_model_dl_progress, row, 0, 1, 2 )
         row += 1
         grid_l.addWidget(q_model_dl_error, row, 0, 1, 2 )
         row += 1
-        grid_l.addWidget(q_enable_poisson_label, row, 0, alignment=qtx.AlignLeft  )
-        grid_l.addWidget(q_enable_poisson, row, 0, 1, 2 )
-        grid_l.addWidget(q_poisson_size_label, row, 0, alignment=qtx.AlignLeft  )
-        grid_l.addWidget(q_poisson_size, row, 0, 1, 2 )
+        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=25), row, 0, 1, 2 )
 
         super().__init__(backend, L('Src Controller'),
                          layout=qtx.QXVBoxLayout([grid_l]) )

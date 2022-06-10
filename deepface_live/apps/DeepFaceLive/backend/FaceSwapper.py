@@ -55,6 +55,7 @@ class FaceSwapperWorker(BackendWorker):
         cs.face_id.call_on_number(self.on_cs_face_id)
         cs.morph_factor.call_on_number(self.on_cs_morph_factor)
         cs.presharpen_amount.call_on_number(self.on_cs_presharpen_amount)
+        cs.poisson_enable.call_on_flag(self.on_cs_poisson_enable)
         cs.poisson_size.call_on_number(self.on_cs_poisson_size)
         cs.pre_gamma_red.call_on_number(self.on_cs_pre_gamma_red)
         cs.pre_gamma_green.call_on_number(self.on_cs_pre_gamma_green)
@@ -136,6 +137,15 @@ class FaceSwapperWorker(BackendWorker):
             cfg = cs.poisson_size.get_config()
             poisson_size = model_state.poisson_size = float(np.clip(poisson_size, cfg.min, cfg.max))
             cs.poisson_size.set_number(poisson_size)
+            self.save_state()
+            self.reemit_frame_signal.send()
+
+    def on_cs_poisson_enable(self, poisson_enable):
+        state, cs = self.get_state(), self.get_control_sheet()
+        model_state = state.model_state
+        if model_state is not None:
+            model_state.poisson_enable = poisson_enable
+
             self.save_state()
             self.reemit_frame_signal.send()
 
@@ -252,6 +262,9 @@ class FaceSwapperWorker(BackendWorker):
                 cs.swap_all_faces.enable()
                 cs.swap_all_faces.set_flag( state.model_state.swap_all_faces if state.model_state.swap_all_faces is not None else False)
 
+                cs.poisson_enable.enable()
+                cs.poisson_enable.set_flag( state.model_state.poisson_enable if state.model_state.poisson_enable is not None else True)
+
                 if self.dfm_model.has_morph_value():
                     cs.morph_factor.enable()
                     cs.morph_factor.set_config(lib_csw.Number.Config(min=0, max=1, step=0.01, decimals=2, allow_instant_update=True))
@@ -261,7 +274,7 @@ class FaceSwapperWorker(BackendWorker):
                 cs.presharpen_amount.set_config(lib_csw.Number.Config(min=0, max=10, step=0.1, decimals=1, allow_instant_update=True))
                 cs.presharpen_amount.set_number(state.model_state.presharpen_amount if state.model_state.presharpen_amount is not None else 0)
 
-                cs.poisson_size.enable()
+                cs.poisson_size.enable() # TODO Poisson check min, max, step
                 cs.poisson_size.set_config(lib_csw.Number.Config(min=0, max=10, step=0.1, decimals=1, allow_instant_update=True))
                 cs.poisson_size.set_number(state.model_state.poisson_size if state.model_state.poisson_size is not None else 0)
 
@@ -333,7 +346,10 @@ class FaceSwapperWorker(BackendWorker):
                                 fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.presharpen_amount)
 
                             if model_state.poisson_size != 0:
-                                fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size) # TODO: poisson_blending
+                                fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size) # TODO Poisson: poisson_blending
+                            
+                            if model_state.poisson_enable:
+                                pass # TODO Poisson enable the poisson
 
                             if pre_gamma_red != 1.0 or pre_gamma_green != 1.0 or pre_gamma_blue != 1.0:
                                 fai_ip.gamma(pre_gamma_red, pre_gamma_green, pre_gamma_blue)
@@ -380,6 +396,7 @@ class Sheet:
             self.face_id = lib_csw.Number.Client()
             self.morph_factor = lib_csw.Number.Client()
             self.presharpen_amount = lib_csw.Number.Client()
+            self.poisson_enable = lib_csw.Flag.Client()
             self.poisson_size = lib_csw.Number.Client()
             self.pre_gamma_red = lib_csw.Number.Client()
             self.pre_gamma_green = lib_csw.Number.Client()
@@ -401,7 +418,8 @@ class Sheet:
             self.face_id = lib_csw.Number.Host()
             self.morph_factor = lib_csw.Number.Host()
             self.presharpen_amount = lib_csw.Number.Host()
-            self.poisson_size = lib_csw.Number.Client()
+            self.poisson_size = lib_csw.Number.Host()
+            self.poisson_enable = lib_csw.Flag.Host()
             self.pre_gamma_red = lib_csw.Number.Host()
             self.pre_gamma_green = lib_csw.Number.Host()
             self.pre_gamma_blue = lib_csw.Number.Host()
@@ -416,6 +434,7 @@ class ModelState(BackendWorkerState):
     morph_factor : float = None
     presharpen_amount : float = None
     poisson_size : float = None
+    poisson_enable : bool = None
     pre_gamma_red : float = None
     pre_gamma_blue : float = None
     pre_gamma_green: float = None

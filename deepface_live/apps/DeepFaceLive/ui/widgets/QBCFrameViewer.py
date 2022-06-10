@@ -8,7 +8,7 @@ from ... import backend
 class QBCFrameViewer(qtx.QXCollapsibleSection):
     def __init__(self,  backed_weak_heap : backend.BackendWeakHeap,
                         bc : backend.BackendConnection,
-                        preview_width=256):
+                        preview_width=512):
         self._timer = qtx.QXTimer(interval=16, timeout=self._on_timer_16ms, start=True)
 
         self._backed_weak_heap = backed_weak_heap

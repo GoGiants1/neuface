@@ -16,6 +16,7 @@ from .ui.QFaceMarker import QFaceMarker
 from .ui.QFaceMerger import QFaceMerger
 from .ui.QFaceAnimator import QFaceAnimator
 from .ui.QFaceSwapper import QFaceSwapper
+from .ui.NSrcController import NSrcController
 from .ui.QFileSource import QFileSource
 from .ui.NDstController import NDstController
 from .ui.QFrameAdjuster import QFrameAdjuster
@@ -89,6 +90,7 @@ class QLiveSwap(qtx.QXWidget):
 
         # Neu-face UI
         self.n_dst_controller  = NDstController(self.file_source)
+        self.n_src_controller  = NSrcController(self.face_swapper, dfm_models_path=dfm_models_path)
 
         q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=0, fixed_width=0),
                                         qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=0),
@@ -102,8 +104,9 @@ class QLiveSwap(qtx.QXWidget):
                                             (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                         ], spacing=0, size_policy=('fixed', 'fixed') )
 
-        q_control_nodes = qtx.QXWidgetHBox([ (qtx.QXWidgetVBox([self.n_dst_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT), qtx.AlignTop),
-                                        ], spacing=0, size_policy=('fixed', 'fixed') )
+        q_control_nodes = qtx.QXWidgetHBox([ qtx.QXWidgetVBox([self.n_dst_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT),
+                                             qtx.QXWidgetVBox([self.n_src_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT),
+                                           ], spacing=0, size_policy=('fixed', 'fixed') )
 
         self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes, q_control_nodes], fixed_width=1024, spacing=0), qtx.AlignCenter) ]))
 

@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 import platform
 from pathlib import Path
 
@@ -92,7 +93,15 @@ class fixPathAction(argparse.Action):
         setattr(namespace, self.dest, os.path.abspath(os.path.expanduser(values)))
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1:
+        main()
+    else:
+        userdata_path = Path('./data')
+        lib_appargs.set_arg_bool('NO_CUDA', True)
+
+        print('Running NeuFaceLive.')
+        from apps.DeepFaceLive.DeepFaceLiveApp import DeepFaceLiveApp
+        DeepFaceLiveApp(userdata_path=userdata_path).run()
 
 # import code
 # code.interact(local=dict(globals(), **locals()))

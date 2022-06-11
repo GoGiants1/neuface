@@ -26,9 +26,10 @@ from .ui.widgets.QBCFaceSwapViewer import QBCFaceSwapViewer
 from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
+_PREVIEW_WIDHT  = 512
 _PREVIEW_HEIGHT = 400
 _CONTROL_HEIGHT = 150
-_WINDOW_WIDTH  = 1024
+_WINDOW_WIDTH   = 2 * _PREVIEW_WIDHT
 _WINDOW_HEIGHT = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + 5
 
 class QLiveSwap(qtx.QXWidget):
@@ -83,10 +84,10 @@ class QLiveSwap(qtx.QXWidget):
         self.q_face_merger    = QFaceMerger(self.face_merger)
         self.q_stream_output  = QStreamOutput(self.stream_output)
 
-        self.q_ds_frame_viewer = QBCFrameViewer(backend_weak_heap, multi_sources_bc_out)
-        self.q_ds_fa_viewer    = QBCFaceAlignViewer(backend_weak_heap, face_aligner_bc_out, preview_width=512)
-        self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=512)
-        self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out)
+        self.q_ds_frame_viewer = QBCFrameViewer(backend_weak_heap, multi_sources_bc_out, preview_width=_PREVIEW_WIDHT)
+        self.q_ds_fa_viewer    = QBCFaceAlignViewer(backend_weak_heap, face_aligner_bc_out, preview_width=0)
+        self.q_ds_fc_viewer    = QBCFaceSwapViewer(backend_weak_heap, face_merger_bc_out, preview_width=0)
+        self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out, preview_width=_PREVIEW_WIDHT)
 
         # Neu-face UI
         self.n_dst_controller  = NDstController(self.file_source)
@@ -98,17 +99,17 @@ class QLiveSwap(qtx.QXWidget):
                                         qtx.QXWidgetVBox([self.q_frame_adjuster, self.q_face_merger, self.q_stream_output], spacing=0, fixed_width=0),
                                     ], spacing=0, size_policy=('fixed', 'fixed'), fixed_height=0)
 
-        q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
+        q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=_PREVIEW_WIDHT, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_fa_viewer], fixed_width=0), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_fc_viewer], fixed_width=0), qtx.AlignTop),
-                                            (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=512, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
+                                            (qtx.QXWidgetVBox([self.q_ds_merged_frame_viewer], fixed_width=_PREVIEW_WIDHT, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                         ], spacing=0, size_policy=('fixed', 'fixed') )
 
-        q_control_nodes = qtx.QXWidgetHBox([ qtx.QXWidgetVBox([self.n_dst_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT),
-                                             qtx.QXWidgetVBox([self.n_src_controller], fixed_width=512, fixed_height=_CONTROL_HEIGHT),
+        q_control_nodes = qtx.QXWidgetHBox([ qtx.QXWidgetVBox([self.n_dst_controller], fixed_width=_PREVIEW_WIDHT, fixed_height=_CONTROL_HEIGHT),
+                                             qtx.QXWidgetVBox([self.n_src_controller], fixed_width=_PREVIEW_WIDHT, fixed_height=_CONTROL_HEIGHT),
                                            ], spacing=0, size_policy=('fixed', 'fixed') )
 
-        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes, q_control_nodes], fixed_width=1024, spacing=0), qtx.AlignCenter) ]))
+        self.setLayout(qtx.QXVBoxLayout( [ (qtx.QXWidgetVBox([q_nodes, q_view_nodes, q_control_nodes], fixed_width=_WINDOW_WIDTH, spacing=0), qtx.AlignCenter) ]))
 
         self._timer = qtx.QXTimer(interval=5, timeout=self._on_timer_5ms, start=True)
 
@@ -237,7 +238,7 @@ class DeepFaceLiveApp(qtx.QXMainApplication):
         settings_dirpath = self.settings_dirpath =  userdata_path / 'settings'
         if not settings_dirpath.exists():
             settings_dirpath.mkdir(parents=True)
-        super().__init__(app_name='DeepFaceLive', settings_dirpath=settings_dirpath)
+        super().__init__(app_name='NeuFaceLive', settings_dirpath=settings_dirpath)
 
         self.setFont( QXFontDB.get_default_font() )
         self.setWindowIcon( QXImageDB.app_icon().as_QIcon() )

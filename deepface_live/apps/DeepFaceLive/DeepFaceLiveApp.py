@@ -153,6 +153,7 @@ class QLiveSwap(qtx.QXWidget):
 class QDFLAppWindow(qtx.QXWindow):
 
     def __init__(self, userdata_path, settings_dirpath):
+        self.m_flag = False
         super().__init__(save_load_state=True, size_policy=('minimum', 'minimum') )
 
         self._userdata_path = userdata_path
@@ -162,8 +163,27 @@ class QDFLAppWindow(qtx.QXWindow):
         self.q_live_swap = None
         self.q_live_swap_container = qtx.QXWidget()
 
+        def mousePressEvent(event):
+            if event.button()==qtx.Qt.MouseButton.LeftButton:
+                self.m_flag = True
+                self.m_Position = event.pos()
+                event.accept()
+
+        def mouseMoveEvent(event):
+            if qtx.Qt.MouseButton.LeftButton and self.m_flag:  
+                self.move(self.pos() - (self.m_Position - event.pos()))
+                self.m_position = event.pos()
+                event.accept()
+
+        def mouseReleaseEvent(event):
+            self.m_flag=False
+            event.accept()
+
         self.content_l = qtx.QXVBoxLayout()
         self.q_title = qtx.QXPushButton(image=QXImageDB.app_icon(), text='NeuFaceLive', flat=True, fixed_width=_WINDOW_WIDTH-_BAR_HEIGHT*3, fixed_height=_BAR_HEIGHT)
+        self.q_title.mousePressEvent = mousePressEvent
+        self.q_title.mouseMoveEvent = mouseMoveEvent
+        self.q_title.mouseReleaseEvent = mouseReleaseEvent
 
         self.q_minimize_btn = qtx.QXPushButton(image=QXImageDB.minimize_outline('white'), flat=True, fixed_width=int(_BAR_HEIGHT*1.5), fixed_height=_BAR_HEIGHT)
         self.q_minimize_btn.connect_signal(self.showMinimized, self.q_minimize_btn.clicked)

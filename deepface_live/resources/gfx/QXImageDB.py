@@ -22,6 +22,7 @@ class QXImageDB:
 
     def add_circle_outline(color='black'): return QXImageDB._get('add-circle-outline.png', color)
     def close_outline(color='black'): return QXImageDB._get('close-outline.png', color)
+    def minimize_outline(color='black'): return QXImageDB._get('minimize-outline.png', color)
 
     def eye_outline(color='black'): return QXImageDB._get('eye-outline.png', color)
 

@@ -1,3 +1,4 @@
+from ctypes import alignment
 from pathlib import Path
 from typing import List
 
@@ -29,8 +30,9 @@ from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 _PREVIEW_WIDHT  = 512
 _PREVIEW_HEIGHT = int(_PREVIEW_WIDHT * 0.78)
 _CONTROL_HEIGHT = int(_PREVIEW_HEIGHT*0.37)
+_BAR_HEIGHT     = 25
 _WINDOW_WIDTH   = 2 * _PREVIEW_WIDHT
-_WINDOW_HEIGHT = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + 5
+_WINDOW_HEIGHT  = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + _BAR_HEIGHT + 5
 
 class QLiveSwap(qtx.QXWidget):
     def __init__(self, userdata_path : Path,
@@ -155,54 +157,23 @@ class QDFLAppWindow(qtx.QXWindow):
 
         self._userdata_path = userdata_path
         self._settings_dirpath = settings_dirpath
-
-        menu_bar = qtx.QXMenuBar( font=QXFontDB.get_default_font(size=10), size_policy=('fixed', 'minimumexpanding') )
-        menu_file = menu_bar.addMenu( L('@QDFLAppWindow.file') )
-        menu_language = menu_bar.addMenu( L('@QDFLAppWindow.language') )
-
-        menu_file_action_reinitialize = menu_file.addAction( L('@QDFLAppWindow.reinitialize') )
-        menu_file_action_reinitialize.triggered.connect(lambda: qtx.QXMainApplication.inst.reinitialize() )
-
-        menu_file_action_reset_settings = menu_file.addAction( L('@QDFLAppWindow.reset_modules_settings') )
-        menu_file_action_reset_settings.triggered.connect(self._on_reset_modules_settings)
-
-        menu_file_action_quit = menu_file.addAction( L('@QDFLAppWindow.quit') )
-        menu_file_action_quit.triggered.connect(lambda: qtx.QXMainApplication.quit() )
-
-        menu_language_action_english = menu_language.addAction('English' )
-        menu_language_action_english.triggered.connect(lambda: (qtx.QXMainApplication.inst.set_language('en-US'), qtx.QXMainApplication.inst.reinitialize()) )
-
-        menu_language_action_spanish = menu_language.addAction('Español' )
-        menu_language_action_spanish.triggered.connect(lambda: (qtx.QXMainApplication.inst.set_language('es-ES'), qtx.QXMainApplication.inst.reinitialize()) )
-
-        menu_language_action_italian = menu_language.addAction('Italiano' )
-        menu_language_action_italian.triggered.connect(lambda: (qtx.QXMainApplication.inst.set_language('it-IT'), qtx.QXMainApplication.inst.reinitialize()) )
-
-        menu_language_action_russian = menu_language.addAction('Русский')
-        menu_language_action_russian.triggered.connect(lambda: (qtx.QXMainApplication.inst.set_language('ru-RU'), qtx.QXMainApplication.inst.reinitialize()) )
-
-        menu_language_action_chinese = menu_language.addAction('汉语')
-        menu_language_action_chinese.triggered.connect(lambda: (qtx.QXMainApplication.inst.set_language('zh-CN'), qtx.QXMainApplication.inst.reinitialize()) )
-
-        menu_help = menu_bar.addMenu( L('@QDFLAppWindow.help') )
-        menu_help_action_github = menu_help.addAction( L('@QDFLAppWindow.visit_github_page') )
-        menu_help_action_github.triggered.connect(lambda: qtx.QDesktopServices.openUrl(qtx.QUrl('https://github.com/iperov/DeepFaceLive' )))
+        self.setWindowFlag(qtx.Qt.WindowType.FramelessWindowHint)
 
         self.q_live_swap = None
         self.q_live_swap_container = qtx.QXWidget()
 
         self.content_l = qtx.QXVBoxLayout()
+        self.q_title = qtx.QXPushButton(image=QXImageDB.app_icon(), text='NeuFaceLive', flat=True, fixed_width=_WINDOW_WIDTH-_BAR_HEIGHT*3, fixed_height=_BAR_HEIGHT)
 
-        cb_process_priority = self._cb_process_priority = qtx.QXSaveableComboBox(
-                                                db_key = '_QDFLAppWindow_process_priority',
-                                                choices=[lib_os.ProcessPriority.NORMAL, lib_os.ProcessPriority.IDLE],
-                                                default_choice=lib_os.ProcessPriority.NORMAL,
-                                                choices_names=[ L('@QDFLAppWindow.process_priority.normal'), L('@QDFLAppWindow.process_priority.lowest') ],
-                                                on_choice_selected=self._on_cb_process_priority_choice)
+        self.q_minimize_btn = qtx.QXPushButton(image=QXImageDB.minimize_outline('white'), flat=True, fixed_width=int(_BAR_HEIGHT*1.5), fixed_height=_BAR_HEIGHT)
+        self.q_minimize_btn.connect_signal(self.showMinimized, self.q_minimize_btn.clicked)
 
-        menu_bar_tail = qtx.QXFrameHBox([10, QXLabel(text=L('@QDFLAppWindow.process_priority')), 4, cb_process_priority], size_policy=('fixed', 'fixed'))
+        self.q_close_btn = qtx.QXPushButton(image=QXImageDB.close_outline('white'), flat=True, fixed_width=int(_BAR_HEIGHT*1.5), fixed_height=_BAR_HEIGHT)
+        self.q_close_btn.connect_signal(self.__close, self.q_close_btn.clicked)
 
-        self.setLayout( qtx.QXVBoxLayout([ qtx.QXWidget(layout=self.content_l) ]))
+        self.titlebar = qtx.QXWidgetHBox([  self.q_title, self.q_minimize_btn, self.q_close_btn ])
+
+        self.setLayout( qtx.QXVBoxLayout([self.titlebar, qtx.QXWidget(layout=self.content_l) ]))
 
         self.call_on_closeEvent(self._on_closeEvent)
 
@@ -230,6 +201,10 @@ class QDFLAppWindow(qtx.QXWindow):
 
     def _on_closeEvent(self):
         self.finalize()
+
+    def __close(self):
+        self.finalize()
+        self.close()
 
 
 class DeepFaceLiveApp(qtx.QXMainApplication):

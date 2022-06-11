@@ -77,14 +77,14 @@ class QLiveSwap(qtx.QXWidget):
 
         self.q_file_source    = QFileSource(self.file_source)
         self.q_camera_source  = QCameraSource(self.camera_source)
-        self.q_face_detector  = QFaceDetector(self.face_detector)
-        self.q_face_marker    = QFaceMarker(self.face_marker)
-        self.q_face_aligner   = QFaceAligner(self.face_aligner)
-        self.q_face_animator  = QFaceAnimator(self.face_animator, animatables_path=animatables_path)
+        self.q_face_detector  = QFaceDetector(self.face_detector).boot()
+        self.q_face_marker    = QFaceMarker(self.face_marker).boot()
+        self.q_face_aligner   = QFaceAligner(self.face_aligner).boot()
+        self.q_face_animator  = QFaceAnimator(self.face_animator, animatables_path=animatables_path).boot()
         self.q_face_swapper   = QFaceSwapper(self.face_swapper, dfm_models_path=dfm_models_path)
-        self.q_frame_adjuster = QFrameAdjuster(self.frame_adjuster)
-        self.q_face_merger    = QFaceMerger(self.face_merger)
-        self.q_stream_output  = QStreamOutput(self.stream_output)
+        self.q_frame_adjuster = QFrameAdjuster(self.frame_adjuster).boot()
+        self.q_face_merger    = QFaceMerger(self.face_merger).boot()
+        self.q_stream_output  = QStreamOutput(self.stream_output).boot()
 
         self.q_ds_frame_viewer = QBCFrameViewer(backend_weak_heap, multi_sources_bc_out, preview_width=_PREVIEW_WIDHT)
         self.q_ds_fa_viewer    = QBCFaceAlignViewer(backend_weak_heap, face_aligner_bc_out, preview_width=0)
@@ -92,8 +92,8 @@ class QLiveSwap(qtx.QXWidget):
         self.q_ds_merged_frame_viewer = QBCMergedFrameViewer(backend_weak_heap, face_merger_bc_out, preview_width=_PREVIEW_WIDHT)
 
         # Neu-face UI
-        self.n_dst_controller  = NDstController(self.file_source)
-        self.n_src_controller  = NSrcController(self.face_swapper, dfm_models_path=dfm_models_path, fixed_width=_PREVIEW_WIDHT)
+        self.n_dst_controller  = NDstController(self.file_source).boot()
+        self.n_src_controller  = NSrcController(self.face_swapper, dfm_models_path=dfm_models_path, fixed_width=_PREVIEW_WIDHT).boot()
 
         q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=0, fixed_width=0),
                                         qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=0),

@@ -90,3 +90,9 @@ class QBackendPanel(qtx.QXWidget):
 
     def _on_btn_reset_state_released(self):
         self._backend.reset_state()
+    
+    def boot(self):
+        backend = self._backend
+        if backend.is_stopped():
+            backend.start()
+        return self

@@ -18,7 +18,7 @@ from .widgets.QSpinBoxCSWNumber import QSpinBoxCSWNumber
 
 
 class NSrcController(QBackendPanel):
-    def __init__(self, backend : FaceSwapper, dfm_models_path : Path):
+    def __init__(self, backend : FaceSwapper, dfm_models_path : Path, fixed_width : int):
         self._dfm_models_path = dfm_models_path
 
         cs = backend.get_control_sheet()
@@ -42,9 +42,10 @@ class NSrcController(QBackendPanel):
         row = 0
         grid_l.addWidget(q_select_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
         row += 1
-        grid_l.addWidget(qtx.QXWidgetHBox([q_device], fixed_width=150), row, 0)
-        grid_l.addWidget(qtx.QXWidgetHBox([q_model], fixed_width=300), row, 1)
-        grid_l.addWidget(qtx.QXWidgetHBox([btn_open_folder, q_model_info_label], fixed_width=60), row, 2)
+        unit_wdith = int(fixed_width / 17)
+        grid_l.addWidget(qtx.QXWidgetHBox([q_device], fixed_width=unit_wdith*5), row, 0)
+        grid_l.addWidget(qtx.QXWidgetHBox([q_model], fixed_width=unit_wdith*10), row, 1)
+        grid_l.addWidget(qtx.QXWidgetHBox([btn_open_folder, q_model_info_label], fixed_width=unit_wdith*2), row, 2)
         row += 1
         grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=10), row, 0, 1, 2 )
         row += 1

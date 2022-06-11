@@ -27,8 +27,8 @@ from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
 _PREVIEW_WIDHT  = 512
-_PREVIEW_HEIGHT = 400
-_CONTROL_HEIGHT = 150
+_PREVIEW_HEIGHT = int(_PREVIEW_WIDHT * 0.78)
+_CONTROL_HEIGHT = int(_PREVIEW_HEIGHT*0.37)
 _WINDOW_WIDTH   = 2 * _PREVIEW_WIDHT
 _WINDOW_HEIGHT = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + 5
 
@@ -91,7 +91,7 @@ class QLiveSwap(qtx.QXWidget):
 
         # Neu-face UI
         self.n_dst_controller  = NDstController(self.file_source)
-        self.n_src_controller  = NSrcController(self.face_swapper, dfm_models_path=dfm_models_path)
+        self.n_src_controller  = NSrcController(self.face_swapper, dfm_models_path=dfm_models_path, fixed_width=_PREVIEW_WIDHT)
 
         q_nodes = qtx.QXWidgetHBox([    qtx.QXWidgetVBox([self.q_file_source, self.q_camera_source], spacing=0, fixed_width=0),
                                         qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=0),

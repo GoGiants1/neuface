@@ -117,6 +117,8 @@ class FaceMarkerWorker(BackendWorker):
             cs.temporal_smoothing.set_number(marker_state.temporal_smoothing if marker_state.temporal_smoothing is not None else 1)
 
         else:
+            devices = onnx_models.FaceMesh.get_available_devices()
+            device = device if device or (not devices) else devices[0]
             if marker_type == MarkerType.OPENCV_LBF:
                 state.opencv_lbf_state.device = device
             elif marker_type == MarkerType.GOOGLE_FACEMESH:
@@ -229,7 +231,8 @@ class OpenCVLBFState(BackendWorkerState):
     device = None
 
 class GoogleFaceMeshState(BackendWorkerState):
-    device = None
+    devices = onnx_models.FaceMesh.get_available_devices()
+    device = None if not devices else devices[0]
 
 class Insight2D106State(BackendWorkerState):
     device = None

@@ -149,6 +149,8 @@ class FaceDetectorWorker(BackendWorker):
             elif detector_type == DetectorType.YOLOV5:
                 self.YoloV5Face = onnx_models.YoloV5Face(device)
         else:
+            devices = onnx_models.YoloV5Face.get_available_devices()
+            device = device if device or (not devices) else devices[0]
             if detector_type == DetectorType.CENTER_FACE:
                 state.center_face_state.device = device
             elif detector_type == DetectorType.S3FD:
@@ -323,7 +325,8 @@ class S3FDState(BackendWorkerState):
     device = None
 
 class YoloV5FaceState(BackendWorkerState):
-    device = None
+    devices = onnx_models.YoloV5Face.get_available_devices()
+    device = None if not devices else devices[0]
 
 class WorkerState(BackendWorkerState):
     def __init__(self):

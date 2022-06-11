@@ -77,7 +77,7 @@ class FaceSwapperWorker(BackendWorker):
             cs.model.select(state.model)
         else:
             devices = DFLive.get_available_devices()
-            state.device = device if not devices else devices[0]
+            state.device = device if device or (not devices) else devices[0]
             self.save_state()
             self.restart()
 

@@ -26,7 +26,7 @@ def main():
         userdata_path = Path(args.userdata_dir)
         lib_appargs.set_arg_bool('NO_CUDA', args.no_cuda)
 
-        print('Running DeepFaceLive.')
+        print('Running NeuFaceLive.')
         from apps.DeepFaceLive.DeepFaceLiveApp import DeepFaceLiveApp
         DeepFaceLiveApp(userdata_path=userdata_path).run()
 

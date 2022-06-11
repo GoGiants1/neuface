@@ -50,11 +50,11 @@ class NSrcController(QBackendPanel):
         row += 1
         grid_l.addLayout(qtx.QXHBoxLayout([q_poisson_label, 2, q_poisson_enable, 2, q_poisson_size ]), row, 0, 1, 3 )
         row += 1
-        grid_l.addWidget(q_model_dl_progress, row, 0, 1, 2 )
+        grid_l.addWidget(q_model_dl_progress, row, 0, 1, 3 )
         row += 1
-        grid_l.addWidget(q_model_dl_error, row, 0, 1, 2 )
+        grid_l.addWidget(q_model_dl_error, row, 0, 1, 3 )
         row += 1
-        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=25), row, 0, 1, 2 )
+        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=25), row, 0, 1, 3 )
 
         super().__init__(backend, L('Src Controller'),
                          layout=qtx.QXVBoxLayout([grid_l]) )

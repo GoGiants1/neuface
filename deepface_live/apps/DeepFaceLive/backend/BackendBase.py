@@ -59,6 +59,8 @@ class BackendConnectionData:
         self._frame_timestamp = None
         self._merged_image_name = None
 
+        self._poisson_size = None
+
         self._face_swap_info_list = []
 
     def __getstate__(self, ):
@@ -129,6 +131,9 @@ class BackendConnectionData:
     def set_frame_image_name(self, frame_image_name : str): self._frame_image_name = frame_image_name
     def get_merged_image_name(self) -> Union[str, None]: return self._merged_image_name
     def set_merged_image_name(self, merged_frame_name : str): self._merged_image_name = merged_frame_name
+
+    def get_poisson_size(self) -> Union[float, None]: return self._poisson_size
+    def set_poisson_size(self, poisson_size : float): self._poisson_size = poisson_size
 
     def get_face_swap_info_list(self) -> List[BackendFaceSwapInfo]: return self._face_swap_info_list
     def add_face_swap_info(self, fsi : BackendFaceSwapInfo):

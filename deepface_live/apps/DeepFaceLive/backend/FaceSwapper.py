@@ -373,6 +373,8 @@ class FaceSwapperWorker(BackendWorker):
                             bcd.set_image(fsi.face_swap_image_name, celeb_face)
                             bcd.set_image(fsi.face_swap_mask_name, celeb_face_mask_img)
 
+                            bcd.set_poisson_size(model_state.poisson_size if model_state.poisson_enable else 0.0)
+
                 self.stop_profile_timing()
                 self.pending_bcd = bcd
 

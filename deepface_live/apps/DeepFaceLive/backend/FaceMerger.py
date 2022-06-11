@@ -207,7 +207,7 @@ class FaceMergerWorker(BackendWorker):
     _cpu_interp = {'bilinear' : ImageProcessor.Interpolation.LINEAR,
                    'bicubic'  : ImageProcessor.Interpolation.CUBIC,
                    'lanczos4' : ImageProcessor.Interpolation.LANCZOS4}
-    def _merge_on_cpu(self, frame_image, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression ):
+    def _merge_on_cpu(self, frame_image, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression, poisson_size ):
         state = self.get_state()
 
         interpolation = self._cpu_interp[state.interpolation]
@@ -249,6 +249,20 @@ class FaceMergerWorker(BackendWorker):
         else:
             out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_image*frame_face_mask*(one_f-opacity) + frame_face_swap_img*frame_face_mask*opacity')
 
+        if poisson_size > 0.0:
+            print("Poisson Blending!")
+            frame_face_mask = ImageProcessor(frame_face_mask).clip2(poisson_size / 10, 0.0, poisson_size / 10, 1.0).to_uint8().get_image('HWC')
+            l, t, w, h = cv2.boundingRect(frame_face_mask)
+            s_maskx, s_masky = int(l + w/2), int(t + h/2)
+            out_merged_frame = cv2.seamlessClone(ImageProcessor(frame_face_swap_img).to_uint8().get_image('HWC'),
+                                                 ImageProcessor(frame_image).to_uint8().get_image('HWC'),
+                                                 frame_face_mask,
+                                                 (s_maskx, s_masky),
+                                                 cv2.NORMAL_CLONE)
+            out_merged_frame = ImageProcessor(out_merged_frame).to_ufloat32().get_image('HWC')
+        else :
+            print("Alpha Blending!")
+
         if do_color_compression and state.color_compression != 0:
             color_compression = max(4, (127.0 - state.color_compression) )
             out_merged_frame *= color_compression
@@ -264,7 +278,7 @@ class FaceMergerWorker(BackendWorker):
 
     _n_mask_multiply_op_text = [ f"float X = {'*'.join([f'(((float)I{i}) / 255.0)' for i in range(n)])}; O = (X <= 0.5 ? 0 : 1);" for n in range(5) ]
 
-    def _merge_on_gpu(self, frame_image, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression ):
+    def _merge_on_gpu(self, frame_image, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression, poisson_size ):
         state = self.get_state()
         interpolation = self._gpu_interp[state.interpolation]
 
@@ -342,6 +356,8 @@ class FaceMergerWorker(BackendWorker):
                             face_swap_img             = bcd.get_image(fsi.face_swap_image_name)
                             face_swap_mask_img        = bcd.get_image(fsi.face_swap_mask_name)
 
+                            poisson_size              = bcd.get_poisson_size()
+
                             if all_is_not_None(face_resolution, face_align_img, face_align_mask_img, face_swap_img, face_swap_mask_img, image_to_align_uni_mat):
                                 has_merged_faces = True
                                 face_height, face_width = face_align_img.shape[:2]
@@ -353,9 +369,9 @@ class FaceMergerWorker(BackendWorker):
 
                                 do_color_compression = fsi_id == fsi_list_len-1
                                 if state.device == 'CPU':
-                                    merged_frame = self._merge_on_cpu(merged_frame, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression=do_color_compression )
+                                    merged_frame = self._merge_on_cpu(merged_frame, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression=do_color_compression, poisson_size=poisson_size )
                                 else:
-                                    merged_frame = self._merge_on_gpu(merged_frame, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression=do_color_compression )
+                                    merged_frame = self._merge_on_gpu(merged_frame, face_resolution, face_align_img, face_align_mask_img, face_align_lmrks_mask_img, face_swap_img, face_swap_mask_img, aligned_to_source_uni_mat, frame_width, frame_height, do_color_compression=do_color_compression, poisson_size=poisson_size )
 
                     if has_merged_faces:
                         # keep image in float32 in order not to extra load FaceMerger

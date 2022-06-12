@@ -27,8 +27,8 @@ from .ui.widgets.QBCFaceSwapViewer import QBCFaceSwapViewer
 from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
-_HIDDEN_WIDTH   = 0
-_PREVIEW_WIDTH  = 512
+_HIDDEN_WIDTH   = 256
+_PREVIEW_WIDTH  = 256
 _PREVIEW_HEIGHT = int(_PREVIEW_WIDTH * 0.78)
 _CONTROL_HEIGHT = int(_PREVIEW_HEIGHT*0.37)
 _BAR_HEIGHT     = 25

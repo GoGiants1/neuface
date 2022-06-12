@@ -435,8 +435,8 @@ class ModelState(BackendWorkerState):
     face_id : int = None
     morph_factor : float = None
     presharpen_amount : float = None
-    poisson_size : float = None
-    poisson_enable : bool = None
+    poisson_size : float = 5.0
+    poisson_enable : bool = True
     pre_gamma_red : float = None
     pre_gamma_blue : float = None
     pre_gamma_green: float = None

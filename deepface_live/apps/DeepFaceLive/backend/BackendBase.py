@@ -59,7 +59,7 @@ class BackendConnectionData:
         self._frame_timestamp = None
         self._merged_image_name = None
 
-        self._poisson_size = None
+        self._poisson_size = 5.0
 
         self._face_swap_info_list = []
 

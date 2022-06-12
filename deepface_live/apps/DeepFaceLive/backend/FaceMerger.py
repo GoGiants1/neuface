@@ -241,14 +241,6 @@ class FaceMergerWorker(BackendWorker):
 
         frame_face_swap_img = face_swap_ip.warp_affine(aligned_to_source_uni_mat, frame_width, frame_height, interpolation=interpolation).get_image('HWC')
 
-        # Combine final frame
-        opacity = np.float32(state.face_opacity)
-        one_f = np.float32(1.0)
-        if opacity == 1.0:
-            out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_face_swap_img*frame_face_mask')
-        else:
-            out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_image*frame_face_mask*(one_f-opacity) + frame_face_swap_img*frame_face_mask*opacity')
-
         if poisson_size > 0.0:
             frame_face_mask = ImageProcessor(frame_face_mask).clip2(poisson_size / 10, 0.0, poisson_size / 10, 1.0).to_uint8().get_image('HWC')
             l, t, w, h = cv2.boundingRect(frame_face_mask)
@@ -259,6 +251,15 @@ class FaceMergerWorker(BackendWorker):
                                                  (s_maskx, s_masky),
                                                  cv2.NORMAL_CLONE)
             out_merged_frame = ImageProcessor(out_merged_frame).to_ufloat32().get_image('HWC')
+        else:
+            # Combine final frame
+            opacity = np.float32(state.face_opacity)
+            one_f = np.float32(1.0)
+            if opacity == 1.0:
+                out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_face_swap_img*frame_face_mask')
+            else:
+                out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_image*frame_face_mask*(one_f-opacity) + frame_face_swap_img*frame_face_mask*opacity')
+
 
         if do_color_compression and state.color_compression != 0:
             color_compression = max(4, (127.0 - state.color_compression) )

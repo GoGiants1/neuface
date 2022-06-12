@@ -72,7 +72,7 @@ class QXFixedLayeredImages(QXWidget):
                 rect = QRect(0, (h-ph_fit)//5, w, ph_fit )
             elif ap < a:
                 pw_fit = w * (ap / a)
-                rect = QRect((w-pw_fit)//5, 0, pw_fit, h )
+                rect = QRect((w-pw_fit)//2, 0, pw_fit, h )
             else:
                 rect = self.rect()
 

@@ -250,7 +250,6 @@ class FaceMergerWorker(BackendWorker):
             out_merged_frame = ne.evaluate('frame_image*(one_f-frame_face_mask) + frame_image*frame_face_mask*(one_f-opacity) + frame_face_swap_img*frame_face_mask*opacity')
 
         if poisson_size > 0.0:
-            print("Poisson Blending!")
             frame_face_mask = ImageProcessor(frame_face_mask).clip2(poisson_size / 10, 0.0, poisson_size / 10, 1.0).to_uint8().get_image('HWC')
             l, t, w, h = cv2.boundingRect(frame_face_mask)
             s_maskx, s_masky = int(l + w/2), int(t + h/2)
@@ -260,8 +259,6 @@ class FaceMergerWorker(BackendWorker):
                                                  (s_maskx, s_masky),
                                                  cv2.NORMAL_CLONE)
             out_merged_frame = ImageProcessor(out_merged_frame).to_ufloat32().get_image('HWC')
-        else :
-            print("Alpha Blending!")
 
         if do_color_compression and state.color_compression != 0:
             color_compression = max(4, (127.0 - state.color_compression) )

@@ -26,9 +26,8 @@ class QXFixedLayeredImages(QXWidget):
         self.update()
 
     def replace_image(self, image, name=None):
+        self._images = []
         self.add_image(image, name=name)
-        if len(self._images) > 1:
-            self._images = self._images[1:]
 
     def add_image(self, image, name=None):
         """

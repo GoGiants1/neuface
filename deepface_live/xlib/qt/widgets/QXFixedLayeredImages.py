@@ -25,6 +25,11 @@ class QXFixedLayeredImages(QXWidget):
         self._images : List = []
         self.update()
 
+    def replace_image(self, image, name=None):
+        self.add_image(image, name=name)
+        if len(self._images) > 1:
+            self._images = self._images[1:]
+
     def add_image(self, image, name=None):
         """
          image  QImage
@@ -64,10 +69,10 @@ class QXFixedLayeredImages(QXWidget):
 
             if ap > a:
                 ph_fit = h * (a / ap)
-                rect = QRect(0, (h-ph_fit)/5, w, ph_fit )
+                rect = QRect(0, (h-ph_fit)//5, w, ph_fit )
             elif ap < a:
                 pw_fit = w * (ap / a)
-                rect = QRect((w-pw_fit)/5, 0, pw_fit, h )
+                rect = QRect((w-pw_fit)//5, 0, pw_fit, h )
             else:
                 rect = self.rect()
 

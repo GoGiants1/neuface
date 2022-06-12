@@ -1,3 +1,4 @@
+from ctypes import alignment
 from pathlib import Path
 
 from localization import L
@@ -36,8 +37,11 @@ class NSrcController(QBackendPanel):
 
         q_poisson_label     = QLabelPopupInfo(label=L('Poisson') )
         q_poisson_enable    = QCheckBoxCSWFlag(cs.poisson_enable, reflect_state_widgets=[q_poisson_label])
-        q_poisson_size      = QSliderCSWNumber(cs.poisson_size, reflect_state_widgets=[q_poisson_label])
+        q_poisson_size      = QSliderCSWNumber(cs.poisson_size)
 
+        q_sharpen_amount_label = QLabelPopupInfo(label=L('@QFaceSwapper.presharpen_amount'), popup_info_text=L('@QFaceSwapper.help.presharpen_amount') )
+        q_sharpen_amount       = QSliderCSWNumber(cs.presharpen_amount, reflect_state_widgets=[q_sharpen_amount_label])
+        
         grid_l = qtx.QXGridLayout( spacing=5)
         row = 0
         grid_l.addWidget(q_select_label, row, 0, alignment=qtx.AlignLeft | qtx.AlignVCenter  )
@@ -49,7 +53,13 @@ class NSrcController(QBackendPanel):
         row += 1
         grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=10), row, 0, 1, 2 )
         row += 1
-        grid_l.addLayout(qtx.QXHBoxLayout([q_poisson_label, 2, q_poisson_enable, 2, q_poisson_size ]), row, 0, 1, 3 )
+        grid_l.addLayout(qtx.QXHBoxLayout([ 2, (qtx.QXWidgetHBox([q_poisson_label, 6, q_poisson_enable], fixed_width=65), qtx.AlignLeft), 
+                                            2, q_poisson_size, 2
+                                          ]), row, 0, 1, 3 )
+        row += 1
+        grid_l.addLayout(qtx.QXHBoxLayout([ 2, qtx.QXWidgetHBox([q_sharpen_amount_label], fixed_width=65), 
+                                            2, q_sharpen_amount, 2 
+                                          ]), row, 0, 1, 3 )
         row += 1
         grid_l.addWidget(q_model_dl_progress, row, 0, 1, 3 )
         row += 1

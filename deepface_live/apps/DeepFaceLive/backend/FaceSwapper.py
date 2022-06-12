@@ -346,7 +346,7 @@ class FaceSwapperWorker(BackendWorker):
                                 fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.presharpen_amount)
 
                             if model_state.poisson_size != 0:
-                                fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size) # TODO Poisson: poisson_blending
+                                pass #fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size) # TODO Poisson: poisson_blending
                             
                             if model_state.poisson_enable:
                                 pass # TODO Poisson enable the poisson

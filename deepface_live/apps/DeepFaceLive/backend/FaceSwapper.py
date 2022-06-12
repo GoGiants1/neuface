@@ -145,6 +145,10 @@ class FaceSwapperWorker(BackendWorker):
         model_state = state.model_state
         if model_state is not None:
             model_state.poisson_enable = poisson_enable
+            if poisson_enable:
+                cs.poisson_size.enable()
+            else:
+                cs.poisson_size.disable()
 
             self.save_state()
             self.reemit_frame_signal.send()
@@ -344,11 +348,9 @@ class FaceSwapperWorker(BackendWorker):
                             fai_ip = ImageProcessor(face_align_image)
 
                             if model_state.poisson_enable:
-                                bcd.set_poisson_size(model_state.poisson_size)
-                            else:
-                                if bcd.get_poisson_size() or bcd.get_poisson_size() == None:
-                                    bcd.set_poisson_size(0.0)
-                                fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size if model_state.poisson_size else 0)
+                                bcd.set_poisson_size(model_state.poisson_size or 0.0)
+                            elif bcd.get_poisson_size() or bcd.get_poisson_size() == None:
+                                bcd.set_poisson_size(0.0)
 
                             if model_state.presharpen_amount != 0:
                                 fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.presharpen_amount)

@@ -51,7 +51,11 @@ class NSrcController(QBackendPanel):
         grid_l.addWidget(qtx.QXWidgetHBox([q_model], fixed_width=unit_wdith*10), row, 1)
         grid_l.addWidget(qtx.QXWidgetHBox([btn_open_folder, q_model_info_label], fixed_width=unit_wdith*2), row, 2)
         row += 1
-        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=10), row, 0, 1, 2 )
+        grid_l.addWidget(q_model_dl_progress, row, 0, 1, 3 )
+        row += 1
+        grid_l.addWidget(q_model_dl_error, row, 0, 1, 3 )
+        row += 1
+        grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=5), row, 0, 1, 2 )
         row += 1
         grid_l.addLayout(qtx.QXHBoxLayout([ 2, (qtx.QXWidgetHBox([q_poisson_label, 6, q_poisson_enable], fixed_width=65), qtx.AlignLeft), 
                                             2, q_poisson_size, 2
@@ -60,10 +64,6 @@ class NSrcController(QBackendPanel):
         grid_l.addLayout(qtx.QXHBoxLayout([ 2, qtx.QXWidgetHBox([q_sharpen_amount_label], fixed_width=65), 
                                             2, q_sharpen_amount, 2 
                                           ]), row, 0, 1, 3 )
-        row += 1
-        grid_l.addWidget(q_model_dl_progress, row, 0, 1, 3 )
-        row += 1
-        grid_l.addWidget(q_model_dl_error, row, 0, 1, 3 )
         row += 1
         grid_l.addWidget(qtx.QXWidgetVBox([], fixed_height=25), row, 0, 1, 3 )
 

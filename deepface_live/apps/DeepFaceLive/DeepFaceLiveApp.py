@@ -27,13 +27,15 @@ from .ui.widgets.QBCFaceSwapViewer import QBCFaceSwapViewer
 from .ui.widgets.QBCMergedFrameViewer import QBCMergedFrameViewer
 from .ui.widgets.QBCFrameViewer import QBCFrameViewer
 
-_HIDDEN_WIDTH   = 256
+_FIX_MODE       = True
+_HIDDEN_WIDTH   = 256 if _FIX_MODE else 0
+_HIDDEN_HEIGHT  = _HIDDEN_WIDTH * 2
 _PREVIEW_WIDTH  = 256
 _PREVIEW_HEIGHT = int(_PREVIEW_WIDTH * 0.78)
-_CONTROL_HEIGHT = int(_PREVIEW_HEIGHT*0.37)
+_CONTROL_HEIGHT = 0 if _FIX_MODE else int(_PREVIEW_HEIGHT*0.37)
 _BAR_HEIGHT     = 25
 _WINDOW_WIDTH   = 2 * (_PREVIEW_WIDTH + _HIDDEN_WIDTH)
-_WINDOW_HEIGHT  = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + _BAR_HEIGHT + 5 + _HIDDEN_WIDTH
+_WINDOW_HEIGHT  = _PREVIEW_HEIGHT + _CONTROL_HEIGHT + _BAR_HEIGHT + 5 + _HIDDEN_HEIGHT
 
 class QLiveSwap(qtx.QXWidget):
     def __init__(self, userdata_path : Path,
@@ -100,7 +102,7 @@ class QLiveSwap(qtx.QXWidget):
                                         qtx.QXWidgetVBox([self.q_face_detector,  self.q_face_aligner,], spacing=0, fixed_width=_HIDDEN_WIDTH),
                                         qtx.QXWidgetVBox([self.q_face_marker, self.q_face_animator, self.q_face_swapper], spacing=0, fixed_width=_HIDDEN_WIDTH),
                                         qtx.QXWidgetVBox([self.q_frame_adjuster, self.q_face_merger, self.q_stream_output], spacing=0, fixed_width=_HIDDEN_WIDTH),
-                                    ], spacing=0, size_policy=('fixed', 'fixed'), fixed_height=_HIDDEN_WIDTH)
+                                    ], spacing=0, size_policy=('fixed', 'fixed'), fixed_height=_HIDDEN_HEIGHT)
 
         q_view_nodes = qtx.QXWidgetHBox([   (qtx.QXWidgetVBox([self.q_ds_frame_viewer], fixed_width=_PREVIEW_WIDTH, fixed_height=_PREVIEW_HEIGHT), qtx.AlignTop),
                                             (qtx.QXWidgetVBox([self.q_ds_fa_viewer], fixed_width=_HIDDEN_WIDTH), qtx.AlignTop),

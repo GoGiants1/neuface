@@ -274,7 +274,7 @@ class FaceSwapperWorker(BackendWorker):
                 cs.presharpen_amount.set_config(lib_csw.Number.Config(min=0, max=10, step=0.1, decimals=1, allow_instant_update=True))
                 cs.presharpen_amount.set_number(state.model_state.presharpen_amount if state.model_state.presharpen_amount is not None else 0)
 
-                cs.poisson_size.enable() # TODO Poisson check min, max, step
+                cs.poisson_size.enable()
                 cs.poisson_size.set_config(lib_csw.Number.Config(min=0, max=10, step=0.1, decimals=1, allow_instant_update=True))
                 cs.poisson_size.set_number(state.model_state.poisson_size if state.model_state.poisson_size is not None else 0)
 
@@ -342,14 +342,16 @@ class FaceSwapperWorker(BackendWorker):
                             post_gamma_green = model_state.post_gamma_green
 
                             fai_ip = ImageProcessor(face_align_image)
+
+                            if model_state.poisson_enable:
+                                bcd.set_poisson_size(model_state.poisson_size)
+                            else:
+                                if bcd.get_poisson_size() or bcd.get_poisson_size() == None:
+                                    bcd.set_poisson_size(0.0)
+                                fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size if model_state.poisson_size else 0)
+
                             if model_state.presharpen_amount != 0:
                                 fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.presharpen_amount)
-
-                            if model_state.poisson_size != 0:
-                                pass #fai_ip.gaussian_sharpen(sigma=1.0, power=model_state.poisson_size) # TODO Poisson: poisson_blending
-                            
-                            if model_state.poisson_enable:
-                                pass # TODO Poisson enable the poisson
 
                             if pre_gamma_red != 1.0 or pre_gamma_green != 1.0 or pre_gamma_blue != 1.0:
                                 fai_ip.gamma(pre_gamma_red, pre_gamma_green, pre_gamma_blue)
@@ -372,8 +374,6 @@ class FaceSwapperWorker(BackendWorker):
                             bcd.set_image(fsi.face_align_mask_name, face_align_mask_img)
                             bcd.set_image(fsi.face_swap_image_name, celeb_face)
                             bcd.set_image(fsi.face_swap_mask_name, celeb_face_mask_img)
-
-                            bcd.set_poisson_size(model_state.poisson_size if model_state.poisson_enable else 0.0)
 
                 self.stop_profile_timing()
                 self.pending_bcd = bcd

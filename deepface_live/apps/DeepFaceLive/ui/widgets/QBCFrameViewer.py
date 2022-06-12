@@ -35,13 +35,11 @@ class QBCFrameViewer(qtx.QXCollapsibleSection):
             if bcd is not None:
                 bcd.assign_weak_heap(self._backed_weak_heap)
 
-                self._layered_images.clear_images()
-
                 frame_image_name = bcd.get_frame_image_name()
                 frame_image = bcd.get_image(frame_image_name)
 
                 if frame_image is not None:
-                    self._layered_images.add_image (frame_image)
+                    self._layered_images.replace_image(frame_image)
                     h,w = frame_image.shape[:2]
                     self._info_label.setText(f'{frame_image_name} {w}x{h}')
 

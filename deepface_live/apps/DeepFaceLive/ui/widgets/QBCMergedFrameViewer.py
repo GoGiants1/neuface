@@ -38,8 +38,6 @@ class QBCMergedFrameViewer(qtx.QXCollapsibleSection):
             if bcd is not None:
                 bcd.assign_weak_heap(self._backed_weak_heap)
 
-                self._layered_images.clear_images()
-
                 merged_image_name = bcd.get_merged_image_name()
                 merged_image = bcd.get_image(merged_image_name)
 
@@ -47,7 +45,7 @@ class QBCMergedFrameViewer(qtx.QXCollapsibleSection):
                     if merged_image.dtype != np.uint8:
                         merged_image = lib_image.ImageProcessor(merged_image).to_uint8().get_image('HWC')
 
-                    self._layered_images.add_image(merged_image)
+                    self._layered_images.replace_image(merged_image)
                     h,w = merged_image.shape[0:2]
                     self._info_label.setText(f'{merged_image_name} {w}x{h}')
 

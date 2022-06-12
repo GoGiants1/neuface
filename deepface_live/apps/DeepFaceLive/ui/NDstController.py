@@ -9,6 +9,7 @@ from .widgets.QButtonCSWDynamicSingleSwitch import \
 from .widgets.QErrorCSWError import QErrorCSWError
 from .widgets.QPathEditCSWPaths import QPathEditCSWPaths
 from .widgets.QSliderCSWNumbers import QSliderCSWNumbers
+from .widgets.QXPushButtonCSWSignal import QXPushButtonCSWSignal
 
 
 class NDstController(QBackendPanel):
@@ -19,12 +20,16 @@ class NDstController(QBackendPanel):
         q_input_paths = QPathEditCSWPaths(cs.input_paths)
         q_error       = QErrorCSWError(cs.error)
 
+        btn_size = (32,32)
+        btn_play_pause = QXPushButtonCSWSignal(cs.play,  image=QXImageDB.play_circle_outline('white'),  button_size=btn_size,
+                                               csw_signal_tooggled=cs.pause, image_toggled=QXImageDB.pause_circle_outline('white'))
         q_frame_slider = QSliderCSWNumbers(cs.frame_index, cs.frame_count)
 
         main_l = qtx.QXVBoxLayout([q_input_type,
                                    q_input_paths,
                                    q_error, qtx.QXWidgetVBox([], spacing=0, fixed_height=10),
-                                   q_frame_slider], spacing=5)
+                                   qtx.QXFrameHBox([2, btn_play_pause, q_frame_slider], spacing=5)
+                                   ], spacing=5)
 
         super().__init__(backend, L('Dst Controller'),
                          layout=main_l, content_align_top=True)

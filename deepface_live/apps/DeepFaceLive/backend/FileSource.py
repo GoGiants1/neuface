@@ -168,7 +168,7 @@ class FileSourceWorker(BackendWorker):
                     cs.frame_index.set_number( fp.get_frame_idx() )
 
                     cs.play.enable()
-                    cs.pause.freeze()
+                    cs.pause.enable()
                     cs.seek_backward.enable()
                     cs.seek_forward.enable()
                     cs.seek_begin.enable()
@@ -232,13 +232,13 @@ class FileSourceWorker(BackendWorker):
         state, cs = self.get_state(), self.get_control_sheet()
 
         if is_playing:
-            cs.play.freeze()
+            cs.play.enable()
             cs.pause.enable()
             cs.seek_backward.freeze()
             cs.seek_forward.freeze()
         else:
             cs.play.enable()
-            cs.pause.freeze()
+            cs.pause.enable()
             cs.seek_backward.enable()
             cs.seek_forward.enable()
 
@@ -253,13 +253,13 @@ class FileSourceWorker(BackendWorker):
                 pr = self.fp.process()
                 if pr.new_is_playing is not None:
                     if pr.new_is_playing:
-                        cs.play.freeze()
+                        cs.play.enable()
                         cs.pause.enable()
                         cs.seek_backward.freeze()
                         cs.seek_forward.freeze()
                     else:
                         cs.play.enable()
-                        cs.pause.freeze()
+                        cs.pause.enable()
                         cs.seek_backward.enable()
                         cs.seek_forward.enable()
 

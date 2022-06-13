@@ -6,8 +6,8 @@
 
 ### `1 ~ 2 scripts`
 
-`workspace` 폴더에 data*src.* 로 비디오를 위치시키고 실행해야 함.
-`workspace` 폴더에 data*dst.* 로 비디오를 위치시키고 실행해야 함.
+`workspace` 폴더에 `data_src.*` 로 비디오를 위치시키고 실행해야 함.
+`workspace` 폴더에 `data_dst.*` 로 비디오를 위치시키고 실행해야 함.
 
 ### `3 ~ 3.3`
 

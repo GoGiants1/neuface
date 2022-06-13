@@ -3,7 +3,7 @@
 ## Pre-Processing
 
 새로운 모델 학습을 시작할 때, `bash clear_workspace.sh`를 실행하면, workspace 폴더 초기화
-
+초기화 이후 `workspace/model` 폴더에 `generic xseg` 모델을 위치시켜야 masking 적용 가능.
 숫자가 매겨진 순서대로 스크립트 실행
 
 ### `1 ~ 2 scripts`
@@ -22,6 +22,8 @@
 - `4~4.3`은 위와 동일하므로 생략.
 
 ### `5_train.sh`
+
+`pretrained model`을 model 폴더 내에 위치시켜야 하고, `data_src/aligned`, `data_dst/aligned`에 packing 된 faceset.pack이 존재해야 함.
 
 - 타겟 얼굴이 바뀔 때마다, pretrained 모델을 새로운 것으로 초기화해준다.(itration이 0인 것으로)
 - usage: `bash 5_train.sh {$target_backup_iteration}` -> `bash 5_train.sh 10000`

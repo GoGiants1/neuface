@@ -2,6 +2,8 @@
 
 ## Pre-Processing
 
+새로운 모델 학습을 시작할 때, `bash clear_workspace.sh`를 실행하면, workspace 폴더 초기화
+
 숫자가 매겨진 순서대로 스크립트 실행
 
 ### `1 ~ 2 scripts`

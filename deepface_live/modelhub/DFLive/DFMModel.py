@@ -50,6 +50,17 @@ def get_available_models_info(models_path : Path) -> List[DFMModelInfo]:
             DFMModelInfo(name='Yohanna Coralson', model_path=models_path / f'Yohanna_Coralson.dfm', url=rf'https://github.com/iperov/DeepFaceLive/releases/download/YOHANNA_CORALSON/Yohanna_Coralson.dfm'),
             DFMModelInfo(name='Zahar Lupin', model_path=models_path / f'Zahar_Lupin.dfm', url=rf'https://github.com/iperov/DeepFaceLive/releases/download/ZAHAR_LUPIN/Zahar_Lupin.dfm'),
         ]
+    bdns_models = [
+        DFMModelInfo(name=f'BDNS {iters}', model_path=models_path / f'BDNS_{iters}.dfm', url=fr'https://github.com/Young-in/NeuFaceLive/releases/download/model/bdns_model_{iters}.dfm') for iters in range(2000, 10000, 2000)
+    ] + [
+        DFMModelInfo(name=f'BDNS {iters}', model_path=models_path / f'BDNS_{iters}.dfm', url=fr'https://github.com/Young-in/NeuFaceLive/releases/download/model/bdns_model_{iters}.dfm') for iters in range(10000, 100000 + 1, 10000)
+    ]
+
+    oha0_models = [
+        DFMModelInfo(name=f'OhHayoung {iters}', model_path=models_path / f'OhHayoung_{iters}.dfm', url=fr'https://github.com/Young-in/NeuFaceLive/releases/download/model/new_SAEHD_model_{iters}.dfm') for iters in range(0, 10000 + 1, 1000)
+    ]
+
+    dfm_models += bdns_models + oha0_models
 
     # scan additional models in directory
     dfm_model_paths = [ celeb.get_model_path() for celeb in dfm_models]

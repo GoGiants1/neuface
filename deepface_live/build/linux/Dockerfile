@@ -18,4 +18,5 @@ RUN python -m pip install onnxruntime-gpu==1.11.0 numpy==1.21.5 h5py numexpr ope
 RUN python -m pip install protobuf==3.20.1
 WORKDIR /app/neuface/deepface_live
 COPY example.sh example.sh
+COPY ./data ./data
 CMD ./example.sh

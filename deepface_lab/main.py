@@ -127,7 +127,8 @@ if __name__ == "__main__":
                   'silent_start'             : arguments.silent_start,
                   'execute_programs'         : [ [int(x[0]), x[1] ] for x in arguments.execute_program ],
                   'debug'                    : arguments.debug,
-                  'export_iter'              : arguments.export_iter
+                  'export_iter'              : arguments.export_iter,
+                  'to_live'                  : arguments.to_live
                   }
         from mainscripts import Trainer
         Trainer.main(**kwargs)
@@ -146,6 +147,7 @@ if __name__ == "__main__":
     p.add_argument('--force-gpu-idxs', dest="force_gpu_idxs", default=None, help="Force to choose GPU indexes separated by comma.")
     p.add_argument('--silent-start', action="store_true", dest="silent_start", default=False, help="Silent start. Automatically chooses Best GPU and last used model.")
     p.add_argument('--export-iter', type=int, dest="export_iter", default=1000, help="Export the DFM for evary [input] iteration.")
+    p.add_argument('--to_live', ction="store_true", dest="to_live", default=False, help="Export DFM to Live.")
     
     p.add_argument('--execute-program', dest="execute_program", default=[], action='append', nargs='+')
     p.set_defaults (func=process_train)

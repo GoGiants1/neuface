@@ -36,6 +36,7 @@ class ModelBase(object):
                        force_model_class_name=None,
                        silent_start=False,
                        iter_export=1000,
+                       to_live=False,
                        **kwargs):
         self.is_training = is_training
         self.is_exporting = is_exporting
@@ -46,6 +47,7 @@ class ModelBase(object):
         self.pretrained_model_path = pretrained_model_path
         self.no_preview = no_preview
         self.iter_export = int(iter_export)
+        self.to_live = to_live
         self.debug = debug
 
         self.model_class_name = model_class_name = Path(inspect.getmodule(self).__file__).parent.name.rsplit("_", 1)[1]

@@ -1,3 +1,4 @@
+import os
 import multiprocessing
 import operator
 from functools import partial
@@ -699,6 +700,10 @@ Examples: df, liae, df-d, df-ud, liae-ud, ...
 
     def export_dfm (self):
         output_path=self.get_strpath_storage_for_file('model.dfm')
+        if self.to_live:
+            dfm_path = output_path.split('deepface_lab')[0] + 'deepface_live\\build\\linux\\data\\dfm_models'
+            os.makedirs(dfm_path, exist_ok=True)
+            output_path = dfm_path + '\\' + (self.get_model_name() + '_model.dfm')
 
         io.log_info(f'Dumping .dfm to {output_path}')
 

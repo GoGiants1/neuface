@@ -137,7 +137,7 @@ neuface_lab
   - `nn.py`는 `neural-network` 클래스를 구현한 것이며, high-level에서 디바이스 정보를 저장하고, 뉴럴넷을 초기화한다.
   - 그외에 leras 폴더 내의 `\*ex.py`는 ex 앞의 단어 cv2, os, path, random, std, struct 등 leras에서 사용할 기능별 `helper function`이 저장되어 있다.
 
-### `facelib`
+### facelib
 
 - `FaceType.py`: `Whole Face`로 학습을 진행했으며 그 이외에 open source에서 정의한 Face-type 들이 선언되어 있다.
 - `FANExtractor`: face-alignment를 찾아내고, [3번](/train_scripts/3_extract_faces_from_src_images.sh),[4번](/train_scripts/4_extract_faces_from_dst_images.sh) 스크립트에서 얼굴을 찾아서 정렬하여 새로운 이미지로 저장할 떄 사용.
@@ -153,7 +153,7 @@ neuface_lab에서는 [SAEHD 모델](/deepface_lab/models/Model_SAEHD/Model.py)�
 
 ## What we contribute
 
-### `main.py`
+### main.py
 
 DeepFace Lab을 실행하는 파이썬 main 파일이다. cli 인자로 넘겨주는 값에 따라 train, export, merge 등을 진행한다.
 우리의 프로젝트에 맞춰, train 과정에서 자동으로 export를 할 수 있도록 `export-iter` 인자를 추가하였다.

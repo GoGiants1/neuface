@@ -36,6 +36,15 @@
 
   - 입력: `3번` 스크립트 실행 결과물(`workspace/data_src/aligned/*.png`)
   - 출력: 새로운 기준에 맞게 정렬된 사진들(`workspace/data_src/aligned/*.png`)
+  - 정렬 후 삭제의 기준
+    ![img](https://i.imgur.com/UAtctbK.png)
+    - 초록: 좋은 데이터
+    - 빨강: 얼굴 정렬이 좋지 않음 -> 삭제
+    - 파랑: 얼굴 위에 다른 장애물이 존재 -> 삭제
+    - 노랑: blurry한 얼굴 -> 삭제 되어야하나, 다른 데이터에는 없는 얼굴 각도를 가진 경우 남길 수도 있음
+    - 보라: 다른 사람의 얼굴 -> 삭제
+    - 핑크: 잘려나간 얼굴 -> 삭제가 바람직
+    - 주황: 너무 어둡운 or 밝은 or overexposed or 명암이 낮은 or 포토샵이 많이 되어 있어서 실제 얼굴과 많이 다른 경우 -> 삭제
   - 정렬 기준
     - [0] blur - sorts by image blurriness (determined by contrast), fairly slow sorting method and unfortunately not perfect at detecting and correctly sorting blurry faces.
     - [1] motion blur - sorts images by checking for motion blur, good for getting rid of faces with lots of motion blur, faster than [0] blur and might be used as an alternative but similarly to [0] not perfect.

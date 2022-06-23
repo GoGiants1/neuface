@@ -135,7 +135,7 @@ neuface_lab
   - [`leras/optimizer`](/deepface_lab/core/leras/optimizers/AdaBelief.py)에는 이번 프로젝트를 진행하며 사용한 AdaBelief optimizer 구현되어 있다.
   - `device.py`는 학습할 때 사용할, 최적의 CPU나 GPU 디바이스를 찾고, 리소스 관리에 사용된다.
   - `nn.py`는 `neural-network` 클래스를 구현한 것이며, high-level에서 디바이스 정보를 저장하고, 뉴럴넷을 초기화한다.
-  - 그외에 leras 폴더 내의 `\*ex.py`는 ex 앞의 단어 cv2, os, path, random, std, struct 등 leras에서 사용할 기능별 `helper function`이 저장되어 있다.
+  - 그외에 leras 폴더 내의 `*ex.py`는 ex 앞의 단어 cv2, os, path, random, std, struct 등 leras에서 사용할 기능별 `helper function`이 저장되어 있다.
 
 ### facelib
 

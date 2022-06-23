@@ -107,7 +107,7 @@ neuface_lab
 - `Sorter`: 특정한 기준에 맞춰 이미지를 순서대로 나열한다. [3.1](/train_scripts/3.1_data_src_sort.sh), [4.1](/train_scripts/4.1_data_dst_sort.sh)에서 사용
 - `Trainer`: 얼굴 모델을 학습시키는 과정을 모아 실행한다. [5](/train_scripts/5_train.sh)번 스크립트에서 사용
 - `Util`: 파일로 저장되어 있는 각종 데이터(데이터셋 메타데이터, landmarks 등)를 처리한다. [3.3](/train_scripts/3.3_data_src_pack.sh), [3.4](/train_scripts/3.4_data_src_unpack.sh), [4.3](/train_scripts/4.3_data_dst_pack.sh)번 스크립트에서 사용
-- `VideoEd`: 입력으로 주어지는 비디오를 편집할 수 있는 메소드를 제공한다. [1](/train_scripts/1_extract_image_from_src_video.sh), [2](/train_scripts/1_extract_image_from_dst_video.sh)
+- `VideoEd`: 입력으로 주어지는 비디오를 편집할 수 있는 메소드를 제공한다. [1](/train_scripts/1_extract_image_from_src_video.sh), [2](/train_scripts/1_extract_image_from_dst_video.sh) 번 스크립트
 - `XSegUtil`: XSeg를 활용하여, 얼굴에서 머리카락 부분과 얼굴 부분을 분리하여 마스킹할 수 있는 메소드를 제공한다. [3.2](/train_scripts/3.2_Xseg_mask_apply_to_data_src.sh), [4.2](/train_scripts/4.2_Xseg_mask_apply_to_data_dst.sh)번 스크립트에서 사용한다.
 
 ### core module & library
@@ -143,7 +143,7 @@ neuface_lab
 - `FANExtractor`: face-alignment를 찾아내고, [3번](/train_scripts/3_extract_faces_from_src_images.sh),[4번](/train_scripts/4_extract_faces_from_dst_images.sh) 스크립트에서 얼굴을 찾아서 정렬하여 새로운 이미지로 저장할 떄 사용.
 - `LandmarksProcessor.py`: 얼굴의 랜드마크를 찾아주는 module
 - `S3FDExtractor.py`: S3FD -> Single Shot Scale-invariant Face Detector라는 뜻으로 Face-detection을 수행하는 모듈이다. 작은 얼굴을 잘 찾아낸다.
-- `XSegNet.py`: 학습시켜둔 XSeg model을 이용해서 이미지의 얼굴을 masking할 때 사용한다. [3.2](/train_scripts/3.2_Xseg_mask_apply_to_data_src.sh), [4.2](/train_scripts/4.2_Xseg_mask_apply_to_data_dst.sh)
+- `XSegNet.py`: 학습시켜둔 XSeg model을 이용해서 이미지의 얼굴을 masking할 때 사용한다. [3.2](/train_scripts/3.2_Xseg_mask_apply_to_data_src.sh), [4.2](/train_scripts/4.2_Xseg_mask_apply_to_data_dst.sh)번 스크립트
 
 ### models
 

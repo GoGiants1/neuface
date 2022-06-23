@@ -9,8 +9,7 @@ RUN apt -y install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 li
 RUN apt install -y python3 python3-pip
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# RUN git clone https://github.com/jtjun/neuface.git
-COPY ../../../neuface /app/neuface
+RUN git clone https://github.com/jtjun/neuface.git
 
 RUN python -m pip install --upgrade pip
 # RUN python -m pip install onnxruntime-gpu==1.11.1 numpy==1.21.6 h5py numexpr protobuf==3.20.1 opencv-python==4.5.5.64 opencv-contrib-python==4.5.5.64 pyqt6==6.3.0 onnx==1.11.0 torch==1.10.0 torchvision==0.11.1

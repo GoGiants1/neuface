@@ -3,7 +3,7 @@
 ## Directory Structure
 
 ```shell
-neuface_lab
+deepface_lab
 ├── core
 │   ├── cv2ex.py
 │   ├── imagelib
@@ -89,7 +89,7 @@ neuface_lab
 
 ## Major Modules
 
-`neuface_lab`를 root directory라고 가정하고 설명을 진행.
+`deepface_lab`를 root directory라고 가정하고 설명을 진행.
 
 `core`, `facelib`, `mainscripts`, `models` 폴더에 핵심적인 로직이 저장되어 있다.
 

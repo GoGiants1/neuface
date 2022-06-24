@@ -99,6 +99,25 @@
   - 입력: command line argument 1개(`target_backup_iteration`), 전처리가 완료된 faceset(`workspace/data_src/aligned/faceset.pak`, `workspace/data_dst/aligned/faceset.pak`)
   - 출력: `.dfm` 파일(neuface_live에 사용할 모델 파일), encoder, decoder, interAB, interB, src_dst_opt(`numpy.ndarray` 저장, `.npy`), data.dat, summary.txt(학습 진행 상황 요약, 파라미터 설정, 현재 iteration 등)
 
+| Parameter         | Value  | Parameter             | Value    |
+| ----------------- | ------ | --------------------- | -------- |
+| Resolution        | 224    | Face_type             | Wf       |
+| Models_opt_on_gpu | True   | Archi                 | Liae-udt |
+| Ae_dims           | 512    | E_dims                | 64       |
+| D_dims            | 64     | D_mask_dims           | 32       |
+| Masked_training   | True   | Eyes_mouth_prio       | True     |
+| Uniform_yaw       | True   | Blur_out_mask         | True     |
+| Adabelief         | True   | Lr_dropout            | Y        |
+| Random_warp       | True   | Random_hsv_power      | 0.0      |
+| True_face_power   | 0.0    | Face_style_power      | 0.0      |
+| Bg_style_power    | 0.0    | Ct_mode               | None     |
+| Clipgrad          | False  | Pretrain              | False    |
+| Autobackup_hour   | 0      | Write_preview_history | True     |
+| Target_iter       | 500000 | Random_src_flip       | Alse     |
+| Random_dst_flip   | True   | Batch_size            | 12       |
+| Gan_power         | 0.0    | Gan_patch_size        | 28       |
+| Gan_dims          | 16     |                       |          |
+
 ## etc.
 
 - `clear_workspace.sh`: `workspace` 폴더 초기화
